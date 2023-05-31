@@ -11,10 +11,7 @@ stages:
   jobs: 
   - job: 'Build'
     displayName: 'Build job'
-    pool:
-      vmImage: 'ubuntu-20.04'
-      demands:
-      - npm
+    pool: myagent
     variables:
       wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
       dotnetSdkVersion: '6.x'
@@ -70,8 +67,7 @@ stages:
   dependsOn: Build
   jobs:
   - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
+    pool: myagent
     environment: dev
     variables:
     - group: Release
@@ -93,8 +89,7 @@ stages:
   dependsOn: Dev
   jobs:
   - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
+    pool: myagent
     environment: test
     variables:
     - group: 'Release'
@@ -113,8 +108,7 @@ stages:
   - job: RunUITests
     dependsOn: Deploy
     displayName: 'Run UI tests'
-    pool:
-      vmImage: 'windows-2019'
+    pool: myagent
     variables:
     - group: 'Release'
     steps: 
@@ -141,8 +135,7 @@ stages:
   dependsOn: Test
   jobs:
   - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
+    pool: myagent
     environment: staging
     variables:
     - group: 'Release'
